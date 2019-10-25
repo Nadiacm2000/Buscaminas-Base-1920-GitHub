@@ -136,27 +136,50 @@ public class VentanaPrincipal {
 	}
 	
 	/**
-	 * M茅todo que inicializa todos los l铆steners que necesita inicialmente el programa
+	 * Metodo que inicializa todos los listeners que necesita inicialmente el programa
 	 */
 	public void inicializarListeners(){
 		//TODO
+		for (int i = 0; i < botonesJuego.length; i++) {
+			for (int j = 0; j < botonesJuego.length; j++) {
+				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
+			}
+		}
+		
+		botonEmpezar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getJuego().inicializarPartida();
+				ventana.dispose();
+				ventana = new JFrame();
+				ventana.setBounds(100, 100, 700, 500);
+				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				juego = new ControlJuego();
+				inicializar();
+				refrescarPantalla();
+				
+			}
+		});
 	}
-	
-	
+		
 	/**
 	 * Pinta en la pantalla el n煤mero de minas que hay alrededor de la celda
-	 * Saca el bot贸n que haya en la celda determinada y a帽ade un JLabel centrado y no editable con el n煤mero de minas alrededor.
-	 * Se pinta el color del texto seg煤n la siguiente correspondecia (consultar la variable correspondeciaColor):
+	 * Saca el boton que haya en la celda determinada y a帽ade un JLabel centrado y no editable con el n鷐ero de minas alrededor.
+	 * Se pinta el color del texto seg鷑 la siguiente correspondecia (consultar la variable correspondeciaColor):
 	 * - 0 : negro
 	 * - 1 : cyan
 	 * - 2 : verde
 	 * - 3 : naranja
-	 * - 4 贸 m谩s : rojo 
+	 * - 4 贸 mas : rojo 
 	 * @param i: posici贸n vertical de la celda.
 	 * @param j: posici贸n horizontal de la celda.
 	 */
 	public void mostrarNumMinasAlrededor(int i , int j) {
 		//TODO
+		panelesJuego[i][j].remove(botonesJuego[i][j]);
+		panelesJuego[i][j].add(new JLabel(Integer.toString(juego.getMinasAlrededor(i, j))));
+		refrescarPantalla();
 	}
 	
 	
@@ -166,14 +189,22 @@ public class VentanaPrincipal {
 	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
-		//TODO
+		
+		porExplosion = juego.esFinJuego();
+		
+		if(porExplosion == true) {
+			System.out.println("GANASTE");
+		}else {
+				System.out.println("perdiste");
+		}
+		
 	}
 
 	/**
 	 * M茅todo que muestra la puntuaci贸n por pantalla.
 	 */
 	public void actualizarPuntuacion() {
-		//TODO
+		pantallaPuntuacion.getText();
 	}
 	
 	/**
@@ -201,7 +232,5 @@ public class VentanaPrincipal {
 		inicializarComponentes();	
 		inicializarListeners();		
 	}
-
-
 
 }
