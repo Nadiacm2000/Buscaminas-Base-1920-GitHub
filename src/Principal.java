@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 
 /**
  * Clase principal
+ * Llama a la clase de Ventana Principal donde se inicializan todos los métodos
  * @author oscarlaguna
  *
  */

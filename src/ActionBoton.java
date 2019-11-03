@@ -38,7 +38,7 @@ public class ActionBoton implements ActionListener{
 			ventanaPrinc.mostrarFinJuego(true);
 			
 			
-		}else {
+		}else { //No gana nunca
 			ventanaPrinc.mostrarNumMinasAlrededor(i, j);
 			if(ventanaPrinc.juego.esFinJuego()) {
 				JOptionPane.showMessageDialog(null, "Ganaste");

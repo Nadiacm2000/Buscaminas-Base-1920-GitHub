@@ -16,12 +16,16 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
+ * Clase de Ventana Principal
+ * Crea una ventana principal donde se guardan paneles con botones dentro
+ * Los botones contienen listeners
  * 
- * @author I77700
+ * @author Nadia Calle Mateos
  *
  */
 public class VentanaPrincipal {
 
+	static String SUMA="";
 	//La ventana principal, en este caso, guarda todos los componentes:
 	JFrame ventana;
 	JPanel panelImagen;
@@ -143,6 +147,7 @@ public class VentanaPrincipal {
 	
 	/**
 	 * Metodo que inicializa todos los listeners que necesita inicialmente el programa
+	 * Al hacer click en GO! se resetean los botones y cambian su valor
 	 */
 	public void inicializarListeners(){
 		//TODO
@@ -223,12 +228,19 @@ public class VentanaPrincipal {
 		refrescarPantalla();
 	}
 	
+	/**
+	 * Método que abre las casillas que hay alrededor de los 0
+	 * @param posX
+	 * @param posY
+	 */
 	public void abrirAdyacentes(int posX, int posY) {
 		for (int i = posX-1; i <= posX+1; i++) {
 			for (int j = posY-1; j <= posY+1; j++) {
 				if ((i>=0) && (j>=0) && (i<juego.LADO_TABLERO) && (j<juego.LADO_TABLERO)){
 					if(panelesJuego[i][j].getComponent(0).getClass() == JButton.class) {
 						botonesJuego[i][j].doClick();
+						SUMA = Integer.toString(juego.getPuntuacion());
+						pantallaPuntuacion.setText(SUMA);
 					}
 				}
 			}
@@ -238,7 +250,7 @@ public class VentanaPrincipal {
 	/**
 	 * Muestra una ventana que indica el fin del juego
 	 * @param porExplosion : Un booleano que indica si es final del juego porque ha explotado una mina (true) o bien porque hemos desactivado todas (false) 
-	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
+	 * Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
 		
