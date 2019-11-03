@@ -19,7 +19,8 @@ import javax.swing.SwingConstants;
  * Clase de Ventana Principal
  * Crea una ventana principal donde se guardan paneles con botones dentro
  * Los botones contienen listeners
- * 
+ * {@link #inicializarListeners()} 
+ * {@code #inicializarListeners()}
  * @author Nadia Calle Mateos
  *
  */
@@ -230,8 +231,8 @@ public class VentanaPrincipal {
 	
 	/**
 	 * Método que abre las casillas que hay alrededor de los 0
-	 * @param posX
-	 * @param posY
+	 * @param posX coordenadaX
+	 * @param posY coordenadaY
 	 */
 	public void abrirAdyacentes(int posX, int posY) {
 		for (int i = posX-1; i <= posX+1; i++) {
