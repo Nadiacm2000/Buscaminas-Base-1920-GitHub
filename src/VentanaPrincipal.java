@@ -4,6 +4,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.temporal.JulianFields;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,7 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
+/**
+ * 
+ * @author I77700
+ *
+ */
 public class VentanaPrincipal {
 
 	//La ventana principal, en este caso, guarda todos los componentes:
@@ -150,15 +156,45 @@ public class VentanaPrincipal {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getJuego().inicializarPartida();
-				ventana.dispose();
-				ventana = new JFrame();
-				ventana.setBounds(100, 100, 700, 500);
-				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				juego = new ControlJuego();
-				inicializar();
-				refrescarPantalla();
+				GridBagConstraints settings = new GridBagConstraints();
 				
+				ventana.remove(panelJuego);
+				panelJuego = new JPanel();
+				panelJuego.setLayout(new GridLayout(10,10));
+				
+				settings = new GridBagConstraints();
+				settings.gridx = 0;
+				settings.gridy = 1;
+				settings.weightx = 1;
+				settings.weighty = 10;
+				settings.gridwidth = 3;
+				settings.fill = GridBagConstraints.BOTH;
+				ventana.add(panelJuego, settings);
+				panelJuego.setBorder(BorderFactory.createTitledBorder("Juego"));
+
+				
+				//Paneles
+				panelesJuego = new JPanel[10][10];
+				for (int i = 0; i < panelesJuego.length; i++) {
+					for (int j = 0; j < panelesJuego[i].length; j++) {
+						panelesJuego[i][j] = new JPanel();
+						panelesJuego[i][j].setLayout(new GridLayout(1,1));
+						panelJuego.add(panelesJuego[i][j]);
+					}
+				}
+				
+				//Botones
+				botonesJuego = new JButton[10][10];
+				for (int i = 0; i < botonesJuego.length; i++) {
+					for (int j = 0; j < botonesJuego[i].length; j++) {
+						botonesJuego[i][j] = new JButton("-");
+						panelesJuego[i][j].add(botonesJuego[i][j]);
+					}
+				}
+				juego.inicializarPartida();
+				pantallaPuntuacion.setText("0");
+				inicializarListeners();
+				refrescarPantalla();
 			}
 		});
 	}
@@ -179,10 +215,26 @@ public class VentanaPrincipal {
 		//TODO
 		panelesJuego[i][j].remove(botonesJuego[i][j]);
 		panelesJuego[i][j].add(new JLabel(Integer.toString(juego.getMinasAlrededor(i, j))));
+		
+		
+		if(getJuego().getMinasAlrededor(i, j) == 0) {
+			abrirAdyacentes(i,j);
+		}
 		refrescarPantalla();
 	}
 	
-	
+	public void abrirAdyacentes(int posX, int posY) {
+		for (int i = posX-1; i <= posX+1; i++) {
+			for (int j = posY-1; j <= posY+1; j++) {
+				if ((i>=0) && (j>=0) && (i<juego.LADO_TABLERO) && (j<juego.LADO_TABLERO)){
+					if(panelesJuego[i][j].getComponent(0).getClass() == JButton.class) {
+						botonesJuego[i][j].doClick();
+					}
+				}
+			}
+		}
+	}
+		
 	/**
 	 * Muestra una ventana que indica el fin del juego
 	 * @param porExplosion : Un booleano que indica si es final del juego porque ha explotado una mina (true) o bien porque hemos desactivado todas (false) 
@@ -190,12 +242,11 @@ public class VentanaPrincipal {
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
 		
-		porExplosion = juego.esFinJuego();
-		
-		if(porExplosion == true) {
-			System.out.println("GANASTE");
-		}else {
-				System.out.println("perdiste");
+		for (int i = 0; i < botonesJuego.length; i++) {
+			for (int j = 0; j < botonesJuego.length; j++) {
+				botonesJuego[i][j].setEnabled(false);
+				refrescarPantalla();
+			}
 		}
 		
 	}

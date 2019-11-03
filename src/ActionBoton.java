@@ -2,10 +2,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  * Clase que implementa el listener de los botones del Buscaminas.
- * De alguna manera tendr√° que poder acceder a la ventana principal.
+ * De alguna manera tendr· que poder acceder a la ventana principal.
  * Se puede lograr pasando en el constructor la referencia a la ventana.
  * Recuerda que desde la ventana, se puede acceder a la variable de tipo ControlJuego
  * @author jesusredondogarcia
@@ -26,15 +27,23 @@ public class ActionBoton implements ActionListener{
 	}
 	
 	/**
-	 *Acci√≥n que ocurrir√° cuando pulsamos uno de los botones.
+	 *AcciÛn que ocurrir· cuando pulsamos uno de los botones.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//TODO
-		if(String.valueOf(((JButton)e.getSource()).getText()).equals("-1")) {
+		if( (ventanaPrinc.juego.abrirCasilla(i, j) == false) ) {
+			
+			JOptionPane.showMessageDialog(null, "Perdiste");
 			ventanaPrinc.mostrarFinJuego(true);
+			
+			
 		}else {
 			ventanaPrinc.mostrarNumMinasAlrededor(i, j);
+			if(ventanaPrinc.juego.esFinJuego()) {
+				JOptionPane.showMessageDialog(null, "Ganaste");
+				ventanaPrinc.mostrarFinJuego(true);
+			}
 		}
 	}
 

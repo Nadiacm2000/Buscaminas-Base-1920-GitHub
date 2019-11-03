@@ -34,20 +34,26 @@ public class ControlJuego {
 	 * 			El resto de posiciones que no son minas guardan en el entero cuántas minas hay alrededor de la celda
 	 */
 	public void inicializarPartida(){
-
+		puntuacion = 0;
 		//TODO: Repartir minas e inicializar puntuacion. Si hubiese un tablero anterior, lo pongo todo a cero para inicializarlo.
 		int RandomI;
 		int RandomJ;
 		
+		for (int i = 0; i < LADO_TABLERO; i++) {
+			for (int j = 0; j < LADO_TABLERO; j++) {
+				tablero[i][j] = 0;
+			}
+		}
 		
-		for (int i = 0; i < MINAS_INICIALES; i++) {
+		int sumMina = 0;
+		do{
 			RandomI = (int)(Math.random()*10);
 			RandomJ = (int)(Math.random()*10);
 			if (tablero[RandomI][RandomJ] != MINA){
 				tablero[RandomI][RandomJ] = MINA;
+				sumMina++;
 			}
-		}
-		
+		}while(sumMina!=20);
 			
 		//Al final del metodo hay que guardar el numero de minas para las casillas que no son mina:
 		for (int i = 0; i < tablero.length; i++) {
@@ -57,8 +63,6 @@ public class ControlJuego {
 				}
 			}
 		}
-		
-		
 		
 		depurarTablero();
 	}
@@ -107,27 +111,11 @@ public class ControlJuego {
 	
 	
 	/**
-	 * Método que checkea si se ha terminado el juego porque se han abierto todas las casillas.
-	 * @return Devuelve verdadero si se han abierto todas las celdas que no son minas.
-	 **/
+	* Método que checkea si se ha terminado el juego porque se han abierto todas las casillas.
+	* @return Devuelve verdadero si se han abierto todas las celdas que no son minas.
+	**/
 	public boolean esFinJuego(){
-		boolean fin = false;
-		int numCeldas = 0;
-		for (int i = 0; i < tablero.length; i++) {
-			for (int j = 0; j < tablero[i].length; j++) {
-				if((tablero[i][j] != MINA) && (abrirCasilla(i, j) == true)) {
-					numCeldas++;
-					if(numCeldas == 80) {
-						fin = true;
-					}else {
-						fin = false;
-					}
-				}else {
-					fin = false;
-				}
-			}
-		}
-		return fin;
+		return puntuacion == ((LADO_TABLERO*LADO_TABLERO)-MINAS_INICIALES);
 	}
 	
 	
